@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Catan AI — Colonist-style UI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Catan AI Prototype</div>
+    <div class="turn-indicator" id="turnIndicator">Turn: - | Current: -</div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel left">
+      <div class="panel-title">Game Log</div>
+      <div id="gamelog" class="log">No events yet.</div>
+    </aside>
+
+    <section class="board-wrap">
+      <div class="controls-top">
+        <button id="newGameBtn" class="btn primary">New Game</button>
+        <button id="rollBtn" class="btn accent">Roll Dice</button>
+        <div id="diceDisplay" class="dice">🎲</div>
+      </div>
+
+      <div id="board" class="board" aria-label="Catan board"></div>
+    </section>
+
+    <aside class="panel right">
+      <div class="panel-title">Players</div>
+      <div id="players" class="players">
+        <!-- player cards injected here -->
+      </div>
+
+      <div class="panel-title">Actions</div>
+      <div class="action-buttons">
+        <button id="buildSettlementBtn" class="btn">Build Settlement</button>
+        <button id="buildRoadBtn" class="btn">Build Road</button>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    Small prototype — UI inspired by colonist.io. Backend remains the same.
+  </footer>
+
+  <script src="{{ url_for('static', filename='game.js') }}"></script>
+</body>
+</html>
