@@ -6,20 +6,30 @@
   --muted: #708090;
   --tile-size: 96px;
   --hex-shadow: rgba(0, 0, 0, 0.12);
+  --success: #58c472;
+  --danger: #f05a54;
+
+  /* Player Colors */
+  --p1-color: #5b87fa;
+  --p2-color: #f0a500;
+  --p3-color: #58c472;
+  --p4-color: #e14d4d;
 }
 
-/* Reset and basics */
+/* Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: "Inter", system-ui, sans-serif;
 }
+
 body {
   background: var(--bg);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* Topbar */
@@ -42,21 +52,25 @@ body {
   gap: 12px;
   padding: 14px;
 }
+
 .panel {
   background: var(--panel);
   padding: 12px;
   border-radius: 10px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
+
 .left,
 .right {
   width: 240px;
 }
+
 @media (max-width: 900px) {
   .layout {
     flex-direction: column;
     align-items: center;
   }
+
   .left,
   .right {
     width: 90%;
@@ -74,38 +88,37 @@ body {
   padding: 8px;
 }
 
-/* Player cards */
+/* Player Cards */
 .players {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
+
 .player-card {
   background: linear-gradient(180deg, #fff, #f8fbff);
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
-}
-.player-card.active {
-  outline: 2px solid var(--accent);
-}
-.player-name {
-  font-weight: 700;
-  font-size: 14px;
-}
-.player-resources {
-  font-size: 12px;
-  color: var(--muted);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: 0.25s;
 }
 
-/* Controls */
+.player-card.active {
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 15px rgba(91, 135, 250, 0.5);
+  transform: scale(1.03);
+}
+
+/* Buttons */
 .controls-top {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-bottom: 10px;
 }
+
 .btn {
   padding: 8px 12px;
   border: none;
@@ -115,6 +128,7 @@ body {
   cursor: pointer;
   transition: 0.2s;
 }
+
 .btn:hover {
   background: var(--accent);
   color: white;
@@ -137,6 +151,7 @@ body {
   flex-direction: column;
   align-items: center;
 }
+
 .board {
   width: 700px;
   height: 540px;
@@ -163,10 +178,11 @@ body {
   justify-content: center;
   text-align: center;
   font-weight: 700;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
+
 .tile .num {
   margin-top: 4px;
   background: rgba(255, 255, 255, 0.9);
@@ -175,32 +191,7 @@ body {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
 
-.player-card {
-  background: linear-gradient(180deg, #fff, #f8fbff);
-  padding: 12px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  border: 2px solid transparent;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-}
-.player-card.active {
-  border: 2px solid var(--accent);
-}
-.card-header {
-  font-size: 15px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-.card-body div {
-  margin: 3px 0;
-}
-.player-res-list {
-  display: flex;
-  gap: 8px;
-  margin: 4px 0;
-}
-
-/* Nodes and Roads */
+/* Node & Settlement */
 .node {
   width: 12px;
   height: 12px;
@@ -209,23 +200,94 @@ body {
   border: 2px solid var(--accent);
   position: absolute;
   z-index: 5;
+  transition: 0.25s;
+  cursor: pointer;
 }
-.settlement {
-  width: 14px;
-  height: 14px;
-  background: var(--accent);
-  border-radius: 50%;
-  border: 2px solid white;
+
+.node.buildable {
+  background: var(--success);
+  box-shadow: 0 0 10px rgba(88, 196, 114, 0.6);
+  transform: scale(1.3);
+}
+
+.node.blocked {
+  background: var(--danger);
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Settlement */
+.house {
+  width: 20px;
+  height: 20px;
   position: absolute;
+  transform: translate(-25%, -60%);
+  clip-path: polygon(50% 0%, 100% 35%, 100% 100%, 0% 100%, 0% 35%);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   z-index: 10;
+  transition: transform 0.15s ease;
 }
+.house:hover {
+  transform: translate(-25%, -60%) scale(1.2);
+}
+
+.house.p1 { background: var(--p1-color); }
+.house.p2 { background: var(--p2-color); }
+.house.p3 { background: var(--p3-color); }
+.house.p4 { background: var(--p4-color); }
+
+/* Roads */
 .road {
   position: absolute;
-  height: 6px;
-  background: var(--accent-dark);
+  height: 8px;
+  width: 40px;
   border-radius: 3px;
   transform-origin: left center;
   z-index: 8;
+  background: #b87333;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  transition: 0.25s;
+}
+
+.road:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(91, 135, 250, 0.7);
+}
+
+.road.p1 { background: var(--p1-color); }
+.road.p2 { background: var(--p2-color); }
+.road.p3 { background: var(--p3-color); }
+.road.p4 { background: var(--p4-color); }
+
+/* Robber */
+.robber {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: radial-gradient(circle at top, #333, #000);
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  cursor: grab;
+}
+
+/* Victory Popup */
+.victory-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background: white;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  font-weight: 700;
+  color: var(--accent-dark);
+  z-index: 100;
+  animation: popup 0.4s ease forwards;
 }
 
 /* Footer */

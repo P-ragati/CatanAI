@@ -13,11 +13,13 @@
   </header>
 
   <main class="layout">
+    <!-- Left: Game Log -->
     <aside class="panel left">
       <div class="panel-title">Game Log</div>
       <div id="gamelog" class="log">No events yet.</div>
     </aside>
 
+    <!-- Middle: Board -->
     <section class="board-wrap">
       <div class="controls-top">
         <button id="newGameBtn" class="btn primary">New Game</button>
@@ -26,22 +28,26 @@
       </div>
 
       <div id="board" class="board" aria-label="Catan board">
-        <div id="roadsLayer"></div>
-        <div id="nodesLayer"></div>
-        <div id="tilesLayer"></div>
-      </div>      
+        <!-- Tiles layer (background hexes) -->
+        <div id="tilesLayer" class="layer tiles-layer"></div>
+
+        <!-- Roads layer (mid-layer for roads between nodes) -->
+        <div id="roadsLayer" class="layer roads-layer"></div>
+
+        <!-- Nodes layer (top layer for settlements/cities) -->
+        <div id="nodesLayer" class="layer nodes-layer"></div>
+      </div>
     </section>
 
+    <!-- Right: Player + Actions -->
     <aside class="panel right">
       <div class="panel-title">Players</div>
-      <div id="players" class="players">
-        <!-- player cards injected here -->
-      </div>
+      <div id="players" class="players"></div>
 
       <div class="panel-title">Actions</div>
       <div class="action-buttons">
-        <button id="buildSettlementBtn" class="btn">Build Settlement</button>
-        <button id="buildRoadBtn" class="btn">Build Road</button>
+        <button id="buildSettlementBtn" class="btn">🏠 Build Settlement</button>
+        <button id="buildRoadBtn" class="btn">🛣️ Build Road</button>
       </div>
     </aside>
   </main>
