@@ -150,6 +150,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 760px;
 }
 
 .board {
@@ -260,18 +261,71 @@ body {
 .road.p3 { background: var(--p3-color); }
 .road.p4 { background: var(--p4-color); }
 
-/* Robber */
-.robber {
+/* Robber (token) */
+.robber-token {
   position: absolute;
-  width: 28px;
-  height: 28px;
-  background: radial-gradient(circle at top, #333, #000);
-  border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
-  z-index: 20;
-  cursor: grab;
+  width: 30px;
+  height: 36px;
+  z-index: 999;
+  transform-origin: center;
+  pointer-events: none;
+  transition: left 0.45s cubic-bezier(.2,.9,.25,1), top 0.45s cubic-bezier(.2,.9,.25,1), transform 0.28s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+/* classic pawn SVG fill */
+.robber-token svg { width: 28px; height: 28px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25)); }
+
+/* tile robbed overlay (darken) */
+.tile.robbed {
+  position: relative;
+  box-shadow: inset 0 0 0 9999px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+/* robber-selectable tile highlight */
+.tile.robber-selectable {
+  outline: 3px dashed rgba(0,0,0,0.12);
+  transform: translateY(-4px);
+}
+
+/* Victim drawer styles (kept compact in same file) */
+.robber-drawer {
+  position: fixed;
+  right: -320px;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background: #ffffff;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
+  padding: 18px;
+  z-index: 200;
+  transition: right 0.32s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border-left: 3px solid var(--accent);
+}
+
+.robber-drawer.open { right: 0; }
+.drawer-header { font-size: 18px; font-weight: 800; color: var(--accent-dark); }
+.drawer-list { display:flex; flex-direction:column; gap:14px; }
+.drawer-victim {
+  padding: 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fff, #f4f7ff);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  font-weight: 600;
+  border: 2px solid transparent;
+  transition: 0.25s ease;
+}
+.drawer-victim:hover { transform: scale(1.02); border-color: var(--accent); box-shadow: 0 6px 18px rgba(91,135,250,0.25); }
+.drawer-victim button {
+  margin-top: 10px; width: 100%; padding: 8px 0; border: none; border-radius: 8px; background: var(--accent); color: white; font-weight: 700; cursor: pointer;
+}
+.drawer-cancel { padding: 10px; border-radius: 10px; border: none; background:#d3d8e8; font-weight:700; cursor:pointer; }
 
 /* Victory Popup */
 .victory-popup {
@@ -297,3 +351,115 @@ body {
   font-size: 13px;
   color: var(--muted);
 }
+
+/* --- Cards row (horizontal) --- */
+.cards-row {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.resource-cards {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 68px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 6px;
+}
+
+.resource-card {
+  min-width: 120px;
+  background: white;
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.resource-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.12); }
+
+.resource-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  display:flex; align-items:center; justify-content:center;
+  font-weight: 800;
+  color: white;
+  font-size: 18px;
+}
+
+.resource-label { font-weight: 700; font-size: 14px; color: #222; }
+.resource-count { margin-left: auto; font-weight: 800; font-size: 18px; color: var(--muted); }
+
+/* resource colors */
+.res-wood { background: #8dbb61; }
+.res-brick { background: #d96b4c; }
+.res-wheat { background: #f1c14c; color: #333;}
+.res-sheep { background: #8ad0d6; color: #033; }
+.res-ore { background: #7f8fa6; }
+
+/* Dev panel */
+.dev-panel {
+  min-width: 340px;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.dev-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.dev-hand {
+  display:flex;
+  gap:8px;
+  min-height:56px;
+  overflow-x:auto;
+  padding-bottom:6px;
+}
+
+.dev-card {
+  min-width:110px;
+  background: linear-gradient(180deg, #fff, #f7fbff);
+  border-radius:10px;
+  padding:8px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.dev-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0,0,0,0.12); }
+
+.dev-type { font-weight:800; font-size:13px; }
+.dev-sub { font-size:12px; color:var(--muted); }
+
+/* small helper */
+.badge {
+  background: var(--accent);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+/* small responsive tweaks */
+@media (max-width: 1100px) {
+  .board-wrap { width: 95vw; }
+  .dev-panel { min-width: 260px; }
+}
+

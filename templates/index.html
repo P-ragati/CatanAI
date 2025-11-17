@@ -6,10 +6,14 @@
   <title>Catan AI — Colonist-style UI</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+<div id="fxLayer" style="position:fixed; left:0; top:0; width:100%; height:100%; pointer-events:none; z-index:5000;"></div>
 <body>
   <header class="topbar">
     <div class="brand">Catan AI Prototype</div>
     <div class="turn-indicator" id="turnIndicator">Turn: - | Current: -</div>
+    <div class="sound-control">
+    🔊 <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.7">
+    </div>
   </header>
 
   <main class="layout">
@@ -28,18 +32,28 @@
       </div>
 
       <div id="board" class="board" aria-label="Catan board">
-        <!-- Tiles layer (background hexes) -->
         <div id="tilesLayer" class="layer tiles-layer"></div>
-
-        <!-- Roads layer (mid-layer for roads between nodes) -->
         <div id="roadsLayer" class="layer roads-layer"></div>
-
-        <!-- Nodes layer (top layer for settlements/cities) -->
         <div id="nodesLayer" class="layer nodes-layer"></div>
+      </div>
+
+      <div class="cards-row panel">
+        <div id="resourceCards" class="resource-cards"></div>
+
+        <div id="devPanel" class="dev-panel">
+          <div class="dev-header">
+            <div>Dev Cards</div>
+            <div class="dev-deck" id="devDeckInfo">Deck: -</div>
+          </div>
+          <div id="devHand" class="dev-hand"></div>
+          <div class="dev-actions">
+            <button id="buyDevBtn" class="btn">Buy Dev Card</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Right: Player + Actions -->
+    <!-- Right: Player -->
     <aside class="panel right">
       <div class="panel-title">Players</div>
       <div id="players" class="players"></div>
@@ -53,8 +67,15 @@
   </main>
 
   <footer class="footer">
-    Small prototype — UI inspired by colonist.io. Backend remains the same.
+    Small prototype — UI inspired by colonist.io
   </footer>
+
+  <!-- Robber victim drawer -->
+  <div id="robberDrawer" class="robber-drawer" aria-hidden="true">
+    <div class="drawer-header">Choose a player to steal from</div>
+    <div id="robberVictimList" class="drawer-list"></div>
+    <button id="robberCancelBtn" class="drawer-cancel">Cancel</button>
+  </div>
 
   <script src="{{ url_for('static', filename='game.js') }}"></script>
 </body>
